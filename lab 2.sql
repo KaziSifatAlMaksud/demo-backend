@@ -1,3 +1,5 @@
+create user <name> identified by <password>
+
 -- Lab Task # 01 (Schema Definition):
 -- i)
 CREATE TABLE ACCOUNT (
