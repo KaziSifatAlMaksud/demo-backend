@@ -39,6 +39,21 @@ FROM STUDENT_TABLE NATURAL JOIN ENROLLED_TABLE NATURAL JOIN COURSE_TABLE;
 
 --write a sql query that returns the name of the course which is not enrolled by any students.
 
+SELECT COUR_NAME
+FROM STUDENT_TABLE, COURSE_TABLE, ENROLLED_TABLE WHERE STUDENT_TABLE.STUDENT_ID = ENROLLED_TABLE.STUDENT_ID  AND COURSE_TABLE.COURSE_ID = ENROLLED_TABLE.COURSE_ID
+ MINUS
+SELECT COUR_NAME
+FROM STUDENT_TABLE COURSE_TABLE, ENROLLED_TABLE NATURAL JOIN STUDENT_TABLE WHERE COURSE_TABLE.COURSE_ID = ENROLLED_TABLE.COURSE_ID;
+
+
+
+-- ANOTHER CODE:
+
+ SELECT COUR_NAME
+ FROM COURSE_TABLE MINUS
+ SELECT COUR_NAME
+ FROM COURSE_TABLE NATURAL JOIN ENROLLED_TABLE;
+
 --write a swl query that counts the number of students whose grade is NULL;
 
 SELECT COUNT(*)-COUNT(GRADE) AS NULL_VALUE FROM ENROLLED_TABLE;
@@ -48,50 +63,44 @@ DROP TABLE ENROLLED_TABLE;
 DROP TABLE STUDENT_TABLE;
 DROP TABLE COURSE_TABLE;
 
--- Ans to the qustion 6
 
-CREATE TABLE RELATION1(A VARCHAR2(2), B VARCHAR2(2),C VARCHAR2(2),D VARCHAR2(2));
-
-CREATE TABLE RELATION2(D VARCHAR2(2),E VARCHAR2(2),F VARCHAR2(2));
-
-INSERT INTO RELATION1 VALUES('A1','B1','C1','D1');
-INSERT INTO RELATION1 VALUES('A2','B2','C2','D2');
-INSERT INTO RELATION1 VALUES('A4','B2','C3','D2');
-INSERT INTO RELATION1 VALUES('A3','B3','C4','D2');
-INSERT INTO RELATION1 VALUES('A5','B3','C5','D1');
+select  sum(balance*.20) as updated_balance, sum(balance + balance*.20)    from account
+    group by branch_name;
 
 
-INSERT INTO RELATION2 VALUES('D1','E1','F1');
-INSERT INTO RELATION2 VALUES('D3','E2','F1');
-INSERT INTO RELATION2 VALUES('D2','E3','F1');
-INSERT INTO RELATION2 VALUES('D4','E2','F3');
 
-SELECT *
-FROM RELATION1 NATURAL JOIN RELATION2;
 
-/*
-D  A  B  C  E  F
--- -- -- -- -- --
-D1 A1 B1 C1 E1 F1
-D2 A2 B2 C2 E3 F1
-D2 A4 B2 C3 E3 F1
-D2 A3 B3 C4 E3 F1
-D1 A5 B3 C5 E1 F1
+select sum(account.blance * branch.assets)
+from branch natural join account
+group by branch_name;
 
-*/
+create table card_table(unit number, price number, courntry varchar2(10));
 
-SELECT *
-FROM RELATION1 RIGHT JOIN RELATION2 ON RELATION1.D = RELATION2.D;
+INSERT into card_table VALUES(2,20,'DHAKA');
+INSERT into card_table VALUES(3,10,'CHITAGAN');
+INSERT into card_table VALUES(6,50,'JOSOR');
+INSERT into card_table VALUES(8,820,'KHOLNA');
+INSERT into card_table VALUES(6,90,'JOSOR');
+INSERT into card_table VALUES(8,520,'KHOLNA');
+INSERT into card_table VALUES(3,10,'CHITAGAN');
+SELECT SUM(UNIT*PRICE)
+FROM card_table;
 
-/*
-A  B  C  D  D  E  F
--- -- -- -- -- -- --
-A1 B1 C1 D1 D1 E1 F1
-A2 B2 C2 D2 D2 E3 F1
-A4 B2 C3 D2 D2 E3 F1
-A3 B3 C4 D2 D2 E3 F1
-A5 B3 C5 D1 D1 E1 F1
-            D3 E2 F1
-            D4 E2 F3
+SELECT courntry, SUM(UNIT*PRICE) AS TOTAL_AMOUNT
+FROM card_table
+GROUP BY courntry;
 
-7 rows selected.*/
+
+create table card_table2( price number,unit number, courntry varchar2(10));
+
+INSERT into card_table2 VALUES(2,20,'DHAKA');
+INSERT into card_table2 VALUES(3,10,'CHITAGAN');
+INSERT into card_table2 VALUES(6,50,'JOSOR');
+INSERT into card_table2 VALUES(8,820,'KHOLNA');
+INSERT into card_table2 VALUES(6,90,'JOSOR');
+INSERT into card_table2 VALUES(8,520,'KHOLNA');
+INSERT into card_table2 VALUES(3,10,'CHITAGAN');
+
+SELECT courntry, SUM(UNIT*PRICE) AS TOTAL_AMOUNT
+FROM card_table, card_table2
+GROUP BY courntry;
